@@ -88,7 +88,7 @@
       "<h1>資訊安全管理系統<br>標準簡介線上課</h1>" +
       "<p>從條文要求到輔導與驗證現場，Allan 講師帶你讀懂 ISO 27001 的每一章，助教阿拉蕾幫你把重點問清楚。</p>" +
       '<div class="stats"><span><b>' + COURSE.length + "</b> 章</span><span><b>93</b> 項控制措施</span><span>約 <b>" + Math.round(totalMins() / 60 * 10) / 10 + "</b> 小時</span><span><b>10</b> 題課後測驗</span></div>" +
-      '<div class="row"><button class="btn primary" data-go="c-' + next.id + '">' + (Object.keys(state.done).length ? "繼續上課：" + esc(next.title) : "開始上課") + '</button><button class="btn" data-go="quiz">課後測驗</button></div></div>' +
+      '<div class="row"><button class="btn primary" data-go="c-' + next.id + '">' + (Object.keys(state.done).length ? "繼續上課：" + esc(next.title) : "開始上課") + '</button><a class="btn" href="play.html">▶ 動畫互動版（語音）</a><button class="btn" data-go="quiz">課後測驗</button></div></div>' +
       '<figure class="who" style="margin:0"><figcaption>講師 Allan Lo 羅宇倫</figcaption><img src="' + IMG.A + '" alt="Allan 講師半身像" width="220"></figure>' +
       "</section>" +
       '<div class="section-title"><h2>選擇章節</h2><span class="note">可依需要跳讀，看完每章請按「標記本章已讀」。</span></div>' +
