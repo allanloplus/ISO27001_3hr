@@ -35,6 +35,7 @@ python3 tools/gen_audio.py   # 只會重新合成有變動的句子
 - `index.html`、`css/style.css`、`js/app.js`：介面與功能
 - `js/content-1.js`～`js/content-3.js`：課程內容（可直接編修文字）
 - `js/quiz.js`：課後測驗題目、正解、解說與通過分數
-- `assets/`：講師、助教半身像（由原始插畫裁切）
+- `assets/`：講師 Allan 與 AI 小助手阿拉蕾的半身像、全身像及 8 種表情（由角色設定圖裁切）
+- `js/characters.js`：角色圖檔與依台詞自動選表情的規則
 - `play.html`、`css/play.css`、`js/play.js`、`js/play-script.js`：動畫互動版
 - `audio/`：各章語音 MP3 與時間軸 `cues.js`；`tools/`：語音產生工具

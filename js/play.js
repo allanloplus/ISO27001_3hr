@@ -165,6 +165,37 @@
     });
     if (S.sfxCb) { $("actorR").classList.add("talk"); $("actorR").classList.remove("quiet"); }
   }
+  /* 表情貼圖 */
+  var CH = window.Characters;
+  ["A", "R"].forEach(function (w) { CH.CHAR[w].moods.forEach(function (m) { new Image().src = CH.face(w, m); }); });
+  var moodNow = "";
+  function showMood(who, m) {
+    var key = who && m && m !== CH.CHAR[who].base ? who + m : "";
+    if (key === moodNow) return;
+    moodNow = key;
+    ["A", "R"].forEach(function (w) {
+      var box = $("mood" + w);
+      if (key && w === who) {
+        var fresh = box.cloneNode(true);
+        fresh.querySelector("img").src = CH.face(w, m);
+        fresh.hidden = false;
+        box.parentNode.replaceChild(fresh, box);
+      } else box.hidden = true;
+    });
+  }
+  function stepMood(st) {
+    if (st.type === "title") return ["R", "fight"];
+    if (st.type === "check") return ["R", "think"];
+    if (st.type === "exp") return ["A", "point"];
+    if (st.type === "end") return ["R", "thumb"];
+    if (st.type === "say") return [st.who, CH.mood(st.who, st.show)];
+    if (st.type === "board" && S.vis[S.cur].kind === "block") {
+      var b = COURSE[S.ch].sections[st.sec].b[st.block];
+      if (b[0] === "tip") return ["A", CH.mood("A", "", b[1])];
+    }
+    return [st.who, ""];
+  }
+
   function oneShot(w, cls) {
     var el = $("actor" + w);
     el.classList.remove("hop", "shake", "nod"); void el.offsetWidth; el.classList.add(cls);
@@ -175,7 +206,7 @@
   function setSpeech(who, html) {
     var sp = $("speech");
     sp.className = "speech " + who + (pref.sub ? "" : " nosub");
-    $("speechWho").textContent = who === "A" ? "Allan 講師" : "阿拉蕾助教";
+    $("speechWho").textContent = CH.CHAR[who].name;
     typed = { html: html, plain: PS.plain(html), n: -1 };
     $("speechTxt").textContent = "";
   }
@@ -194,6 +225,7 @@
     var st = S.steps[k];
     renderBoard();
     setSpeech(st.who, st.type === "row" ? st.show : (st.type === "title" ? "接下來的主題：<b>" + esc(st.show) + "</b>" : (st.type === "check" ? "隨堂小測驗！" + st.show : st.show)));
+    var md = stepMood(st); showMood(md[0], md[1]);
     if (st.type === "title") oneShot("R", "hop");
     if (st.type === "board" && S.vis[k].kind === "block") {
       var b = COURSE[S.ch].sections[st.sec].b[st.block];
@@ -342,6 +374,7 @@
     showAnswer($("board").querySelector(".bq"), b, pick);
     var right = pick === b[3];
     oneShot("R", right ? "hop" : "shake");
+    showMood("R", right ? "thumb" : "sad");
     if (right) confetti();
     pauseMedia(); S.waiting = false;
     var tok = ++S.token;
@@ -506,7 +539,8 @@
     $("coverTitle").textContent = "歡迎回來！";
     $("coverText").textContent = "上次看到「" + COURSE[start].title + "」第 " + (pref.step + 1) + " 句，按下播放繼續上課。也可以從下方選擇其他章節。";
   }
-  setSpeech("R", "哦嗨喲～我是助教阿拉蕾！按下播放鍵，我們就開始上課囉！");
+  setSpeech("R", "哦嗨喲～我是 AI 小助手阿拉蕾！按下播放鍵，我們就開始上課囉！");
+  showMood("R", "laugh");
   typeTo(1);
   requestAnimationFrame(tick);
 })();

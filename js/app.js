@@ -5,8 +5,12 @@
   var COURSE = window.COURSE;
   var QUIZ = window.QUIZ;
   var NEW = window.NEW_CONTROLS || [];
-  var IMG = { A: "assets/allan.webp", R: "assets/arale.webp", duo: "assets/duo.webp" };
-  var NAME = { A: "Allan 講師", R: "阿拉蕾助教" };
+  var CH = window.Characters;
+  var IMG = { A: CH.CHAR.A.pose, R: CH.CHAR.R.pose };
+  function sayHTML(who, html, mood) {
+    var m = mood || CH.mood(who, html);
+    return '<div class="say ' + who + '"><div class="face"><img src="' + CH.face(who, m) + '" alt=""><b>' + CH.CHAR[who].short + '</b></div><div class="bubble" aria-label="' + CH.CHAR[who].name + '">' + html + "</div></div>";
+  }
   var TIP = { consult: "顧問實務", audit: "稽核員視角", ng: "常見缺失", key: "重點" };
   var COURSE_TITLE = "ISMS 標準簡介：ISO/IEC 27001:2022 線上課程";
   var STORE = "isms27001-course-v1";
@@ -83,13 +87,13 @@
     $main.innerHTML =
       '<div class="wrap">' +
       '<section class="hero">' +
-      '<figure class="who" style="margin:0"><figcaption>助教 阿拉蕾</figcaption><img src="' + IMG.R + '" alt="助教阿拉蕾半身像" width="170"></figure>' +
+      '<figure class="who" style="margin:0"><figcaption>講師 Allan Lo 羅宇倫</figcaption><img src="' + IMG.A + '" alt="Allan 講師半身像" width="220"></figure>' +
       '<div class="copy"><div class="eyebrow">ISO/IEC 27001:2022 · CNS 27001:2023</div>' +
       "<h1>資訊安全管理系統<br>標準簡介線上課</h1>" +
       "<p>從條文要求到輔導與驗證現場，Allan 講師帶你讀懂 ISO 27001 的每一章，助教阿拉蕾幫你把重點問清楚。</p>" +
       '<div class="stats"><span><b>' + COURSE.length + "</b> 章</span><span><b>93</b> 項控制措施</span><span>約 <b>" + Math.round(totalMins() / 60 * 10) / 10 + "</b> 小時</span><span><b>10</b> 題課後測驗</span></div>" +
       '<div class="row"><button class="btn primary" data-go="c-' + next.id + '">' + (Object.keys(state.done).length ? "繼續上課：" + esc(next.title) : "開始上課") + '</button><a class="btn" href="play.html">▶ 動畫互動版（語音）</a><button class="btn" data-go="quiz">課後測驗</button></div></div>' +
-      '<figure class="who" style="margin:0"><figcaption>講師 Allan Lo 羅宇倫</figcaption><img src="' + IMG.A + '" alt="Allan 講師半身像" width="220"></figure>' +
+      '<figure class="who" style="margin:0"><figcaption>AI 小助手 阿拉蕾</figcaption><img src="' + IMG.R + '" alt="助教阿拉蕾半身像" width="200"></figure>' +
       "</section>" +
       '<div class="section-title"><h2>選擇章節</h2><span class="note">可依需要跳讀，看完每章請按「標記本章已讀」。</span></div>' +
       '<div class="grid-cards">' + cards + "</div></div>";
@@ -99,13 +103,13 @@
   function block(b, key) {
     switch (b[0]) {
       case "A": case "R":
-        return '<div class="say ' + b[0] + '"><div class="face"><img src="' + IMG[b[0]] + '" alt=""><b>' + (b[0] === "A" ? "Allan" : "阿拉蕾") + '</b></div><div class="bubble" aria-label="' + NAME[b[0]] + '">' + b[1] + "</div></div>";
+        return sayHTML(b[0], b[1]);
       case "p": return '<p class="p">' + b[1] + "</p>";
       case "list": return '<ul class="list">' + b[1].map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul>";
       case "std":
         return '<div class="std"><header><span class="lbl">標準要求</span>' + b[1] + "</header><ol>" + b[2].map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ol></div>";
       case "tip":
-        var face = b[1] === "consult" || b[1] === "audit" ? '<img src="' + IMG.A + '" alt="">' : "";
+        var face = '<img src="' + CH.face("A", CH.mood("A", "", b[1])) + '" alt="">';
         return '<div class="tip ' + b[1] + '"><div class="t">' + face + '<span class="lbl">' + TIP[b[1]] + "</span>" + b[2] + '</div><div class="body">' + b[3] + "</div></div>";
       case "table":
         return '<div class="tbl"><table><thead><tr>' + b[1].map(function (h) { return "<th>" + h + "</th>"; }).join("") + "</tr></thead><tbody>" +
@@ -202,11 +206,11 @@
         }).join("") + "</div></div>";
     }).join("");
     $main.innerHTML = '<div class="wrap">' +
-      '<section class="quiz-intro"><img src="' + IMG.R + '" alt="助教阿拉蕾" width="120"><div><div class="eyebrow">課後測驗</div><h1 style="font-size:1.6rem">ISO 27001:2022 課後測驗</h1>' +
+      '<section class="quiz-intro"><img src="' + CH.face("R", "fight") + '" alt="助教阿拉蕾" width="120"><div><div class="eyebrow">課後測驗</div><h1 style="font-size:1.6rem">ISO 27001:2022 課後測驗</h1>' +
       '<p class="p">共 10 題單選，答對 <b>8 題（80 分）</b>以上即通過，可填寫資料並下載結業證書與題目解答。未通過可重新閱讀課程後再測驗，每次題目與選項順序會重新排列。</p>' +
       (unread.length ? '<p class="note">提醒：你還有 ' + unread.length + " 章未標記已讀，建議先讀完再作答。</p>" : "") +
       "</div></section>" +
-      '<div class="say R"><div class="face"><img src="' + IMG.R + '" alt=""><b>阿拉蕾</b></div><div class="bubble">加油加油！仔細看題目喔，「不是」、「新增」這種字眼最容易看錯～</div></div>' +
+      sayHTML("R", "加油加油！仔細看題目喔，「不是」、「新增」這種字眼最容易看錯～", "fight") +
       qs +
       '<div class="row"><button class="btn primary" id="submitQuiz">交卷</button><span class="note" id="quizHint">已作答 0 / 10 題</span></div></div>';
 
@@ -256,10 +260,10 @@
   function renderFail(score, refs) {
     var links = refs.map(function (r) { var c = COURSE[chapterIndex(r)]; return c ? '<button class="btn small" data-go="c-' + c.id + '">' + esc(c.title) + "</button>" : ""; }).join("");
     $main.innerHTML = '<div class="wrap">' +
-      '<section class="result fail"><img src="' + IMG.R + '" alt="助教阿拉蕾" width="110"><div><div class="eyebrow">測驗結果</div><h2>未通過，再挑戰一次！</h2>' +
+      '<section class="result fail"><img src="' + CH.face("R", "sad") + '" alt="助教阿拉蕾" width="110"><div><div class="eyebrow">測驗結果</div><h2>未通過，再挑戰一次！</h2>' +
       '<div class="row" style="margin-top:6px"><span class="score">' + score + '</span><span class="note">分（通過標準 ' + QUIZ.passScore + " 分，答對 " + attempt.result.correct + " / 10 題）</span></div></div></section>" +
-      '<div class="say R"><div class="face"><img src="' + IMG.R + '" alt=""><b>阿拉蕾</b></div><div class="bubble">哎呀～差一點點！我們先回去把下面這幾章再讀一遍，再來重新測驗吧！</div></div>' +
-      '<div class="say A"><div class="face"><img src="' + IMG.A + '" alt=""><b>Allan</b></div><div class="bubble">稽核員也不是一次就考過 LA 的。為了讓測驗有意義，未通過時不公布正解，<b>請先重新閱讀建議章節</b>，再回來重新測驗。</div></div>' +
+      sayHTML("R", "哎呀～差一點點！我們先回去把下面這幾章再讀一遍，再來重新測驗吧！", "sad") +
+      sayHTML("A", "稽核員也不是一次就考過 LA 的。為了讓測驗有意義，未通過時不公布正解，<b>請先重新閱讀建議章節</b>，再回來重新測驗。", "point") +
       '<section class="form"><h2 style="font-size:1.15rem">建議重新閱讀的章節</h2><div class="review-list">' + links + "</div></section>" +
       '<div class="row"><button class="btn" data-go="c-' + (refs[0] || COURSE[0].id) + '">重新閱讀課程</button><button class="btn primary" id="retake">重新測驗</button></div></div>';
     document.getElementById("retake").addEventListener("click", function () { attempt = null; renderQuiz(); window.scrollTo(0, 0); });
@@ -278,9 +282,9 @@
     var p = state.pending;
     var prev = (state.passed && state.passed.info) || {};
     $main.innerHTML = '<div class="wrap">' +
-      '<section class="result pass"><img src="' + IMG.A + '" alt="Allan 講師" width="110"><div><div class="eyebrow">測驗結果</div><h2>恭喜通過！</h2>' +
+      '<section class="result pass"><img src="' + CH.face("A", "laugh") + '" alt="Allan 講師" width="110"><div><div class="eyebrow">測驗結果</div><h2>恭喜通過！</h2>' +
       '<div class="row" style="margin-top:6px"><span class="score">' + p.score + '</span><span class="note">分（答對 ' + (p.score / 10) + " / 10 題）</span></div></div></section>" +
-      '<div class="say A"><div class="face"><img src="' + IMG.A + '" alt=""><b>Allan</b></div><div class="bubble">做得好！請填寫下面的資料，系統會產生你的<b>結業證書</b>，並附上測驗題目與解答。</div></div>' +
+      sayHTML("A", "做得好！請填寫下面的資料，系統會產生你的<b>結業證書</b>，並附上測驗題目與解答。", "wink") +
       '<form class="form" id="infoForm" novalidate><h2 style="font-size:1.15rem">通過人員資料（皆為必填）</h2><div class="fgrid">' +
       FIELDS.map(function (f) {
         return '<div class="field"><label for="f-' + f[0] + '">' + f[1] + " <i>*</i></label>" +
@@ -348,7 +352,7 @@
       g.lineWidth = 2; g.strokeRect(72, 72, W - 144, H - 144);
       g.fillStyle = RED; g.fillRect(72, 72, W - 144, 14);
 
-      // 人物（左：阿拉蕾，右：Allan），半身
+      // 人物（左：Allan，右：阿拉蕾），半身
       function portrait(im, x, y, w, h) {
         if (!im) return;
         g.save(); g.beginPath(); g.rect(x, y, w, h); g.clip();
@@ -357,11 +361,11 @@
         g.restore();
         g.strokeStyle = INK; g.lineWidth = 3; g.strokeRect(x, y, w, h);
       }
-      portrait(imR, 110, H - 470, 250, 360);
-      portrait(imA, W - 360, H - 470, 250, 360);
+      portrait(imA, 110, H - 470, 250, 360);
+      portrait(imR, W - 360, H - 470, 250, 360);
       g.fillStyle = INK; g.font = "26px " + HAND; g.textAlign = "center";
-      g.fillText("助教 阿拉蕾", 235, H - 488);
-      g.fillText("講師 Allan Lo", W - 235, H - 488);
+      g.fillText("講師 Allan Lo", 235, H - 488);
+      g.fillText("AI 小助手 阿拉蕾", W - 235, H - 488);
 
       g.textAlign = "center";
       g.fillStyle = RED; g.font = "700 28px " + SANS;
@@ -454,9 +458,9 @@
     renderSide("quiz");
     var rows = answerRows(P);
     $main.innerHTML = '<div class="wrap">' +
-      '<section class="result pass"><img src="' + IMG.A + '" alt="Allan 講師" width="110"><div><div class="eyebrow">已通過課後測驗</div><h2>恭喜 ' + esc(info.name) + "，完成課程！</h2>" +
+      '<section class="result pass"><img src="' + CH.face("A", "laugh") + '" alt="Allan 講師" width="110"><div><div class="eyebrow">已通過課後測驗</div><h2>恭喜 ' + esc(info.name) + "，完成課程！</h2>" +
       '<div class="row" style="margin-top:6px"><span class="score">' + P.score + '</span><span class="note">分 · 證書編號 <span class="mono">' + esc(P.no) + "</span></span></div></div></section>" +
-      '<div class="say R"><div class="face"><img src="' + IMG.R + '" alt=""><b>阿拉蕾</b></div><div class="bubble">んちゃ！證書做好了～記得下載保存喔！題目和解答也附在下面了！</div></div>' +
+      sayHTML("R", "んちゃ！證書做好了～記得下載保存喔！題目和解答也附在下面了！", "thumb") +
       '<section class="cert-box"><div class="section-title"><h2>結業證書</h2><span class="note">' + esc(info.company) + " · " + esc(info.dept) + " · " + esc(info.title) + " · " + esc(info.email) + "</span></div>" +
       '<img id="certImg" alt="結業證書（產生中…）">' +
       '<div class="row"><button class="btn primary" id="dlCert" disabled>下載證書（PNG）</button><button class="btn" id="dlSheet" disabled>下載證書＋題目解答（HTML）</button><button class="btn" id="printBtn" disabled>列印 / 另存 PDF</button></div>' +
