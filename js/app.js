@@ -13,7 +13,7 @@
   }
   var TIP = { consult: "顧問實務", audit: "稽核員視角", ng: "常見缺失", key: "重點" };
   var CREDIT = "教材規劃製作：Allan Lo 顧問（http://www.123hi.org）";
-  var COPYRIGHT = "Copyright © 2027 Allan Lo. All rights reserved.";
+  var COPYRIGHT = "Copyright © 2026 Allan Lo. All rights reserved.";
   var COURSE_TITLE = "ISMS 標準簡介：ISO/IEC 27001:2022 線上課程";
   var STORE = "isms27001-course-v1";
 

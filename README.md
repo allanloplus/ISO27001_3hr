@@ -43,4 +43,4 @@ python3 tools/gen_audio.py   # 只會重新合成有變動的句子
 ---
 教材規劃製作：Allan Lo 顧問（http://www.123hi.org）
 
-Copyright © 2027 Allan Lo. All rights reserved.
+Copyright © 2026 Allan Lo. All rights reserved.
