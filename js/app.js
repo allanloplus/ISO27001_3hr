@@ -92,6 +92,7 @@
       '<figure class="who" style="margin:0"><figcaption>講師 Allan Lo 羅宇倫</figcaption><img src="' + IMG.A + '" alt="Allan 講師半身像" width="220"></figure>' +
       '<div class="copy"><div class="eyebrow">ISO/IEC 27001:2022 · CNS 27001:2023</div>' +
       "<h1>資訊安全管理系統<br>標準簡介線上課</h1>" +
+      (window.LICENSE ? '<div class="lic-hero">' + esc(window.LICENSE.company) + "　內部教育訓練專用</div>" : "") +
       "<p>從條文要求到輔導與驗證現場，Allan 講師帶你讀懂 ISO 27001 的每一章，助教阿拉蕾幫你把重點問清楚。</p>" +
       '<div class="stats"><span><b>' + COURSE.length + "</b> 章</span><span><b>93</b> 項控制措施</span><span>約 <b>" + Math.round(totalMins() / 60 * 10) / 10 + "</b> 小時</span><span><b>10</b> 題課後測驗</span></div>" +
       '<div class="row"><button class="btn primary" data-go="c-' + next.id + '">' + (Object.keys(state.done).length ? "繼續上課：" + esc(next.title) : "開始上課") + '</button><a class="btn" href="play.html">▶ 動畫互動版（語音）</a><button class="btn" data-go="quiz">課後測驗</button></div></div>' +
@@ -402,6 +403,11 @@
       g.fillStyle = INK; g.font = "700 26px " + '"JetBrains Mono", monospace';
       g.fillText(P.no, bx + 130, 880);
       g.font = "500 26px " + SANS; g.fillText(fmtDate(P.at), bx + 130, 935);
+      if (window.LICENSE) {
+        var lic = window.LICENSE.company + (window.LICENSE.dept ? " " + window.LICENSE.dept : "");
+        g.font = "400 24px " + SANS; g.fillStyle = "#5a6170"; g.fillText("授權單位", bx, 990);
+        g.fillStyle = INK; fit(lic, "500 {s}px " + SANS, 26, 380); g.fillText(lic, bx + 130, 990);
+      }
       g.textAlign = "center";
       g.font = "400 46px " + HAND; g.fillStyle = INK; g.fillText("Allan Lo 羅宇倫", 1090, 900);
       g.lineWidth = 1.5; g.beginPath(); g.moveTo(950, 915); g.lineTo(1230, 915); g.stroke();
@@ -448,7 +454,7 @@
       "<tr><td>公司名稱</td><td>" + esc(info.company) + "</td></tr><tr><td>單位</td><td>" + esc(info.dept) + "</td></tr><tr><td>姓名</td><td>" + esc(info.name) + "</td></tr>" +
       "<tr><td>職稱</td><td>" + esc(info.title) + "</td></tr><tr><td>E-mail</td><td>" + esc(info.email) + "</td></tr><tr><td>成績</td><td>" + P.score + " 分</td></tr>" +
       "<tr><td>證書編號</td><td>" + esc(P.no) + "</td></tr><tr><td>日期</td><td>" + fmtDate(P.at) + "</td></tr></table>" + body +
-      '<p style="margin-top:24px;color:#5a6170;font-size:13px;text-align:center">' + esc(CREDIT) + "<br>" + esc(COPYRIGHT) + "</p></body></html>";
+      '<p style="margin-top:24px;color:#5a6170;font-size:13px;text-align:center">' + (window.LICENSE ? esc(window.licenseText()) + "<br>" : "") + esc(CREDIT) + "<br>" + esc(COPYRIGHT) + "</p></body></html>";
   }
 
   function download(name, url) {
@@ -488,7 +494,7 @@
       pa.innerHTML = '<img src="' + url + '" alt="">' + "<h2>" + esc(COURSE_TITLE) + "－課後測驗題目與解答（" + esc(info.name) + "）</h2>" +
         rows.map(function (r) {
           return '<div class="pq"><b>' + r.n + ". " + r.q + "</b><br>" + r.opts.map(function (o, i) { return "ABCD"[i] + ". " + o + (i === r.a ? " ✔" : ""); }).join("<br>") + "<br><i>解說：" + r.exp + "</i></div>";
-        }).join("") + '<p style="text-align:center;font-size:9pt;margin-top:16pt">' + esc(CREDIT) + "<br>" + esc(COPYRIGHT) + "</p>";
+        }).join("") + '<p style="text-align:center;font-size:9pt;margin-top:16pt">' + (window.LICENSE ? esc(window.licenseText()) + "<br>" : "") + esc(CREDIT) + "<br>" + esc(COPYRIGHT) + "</p>";
     });
     document.getElementById("dlCert").addEventListener("click", function () {
       if (certURL) download("ISMS結業證書_" + info.name + ".png", certURL);

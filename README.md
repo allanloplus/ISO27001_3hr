@@ -24,6 +24,26 @@ python3 tools/gen_audio.py   # 只會重新合成有變動的句子
 ```
 若內容有改但未重新產生語音，播放器會自動改用瀏覽器內建語音（音色依裝置而異）。
 
+## 客戶授權版（企業內部網站）
+
+GitHub 上的公開版不顯示任何授權資訊（`js/license.js` 為 `null`）。要提供給客戶放在企業內部網站時，在專案根目錄執行：
+
+```bash
+python3 tools/make_license_package.py --company "○○股份有限公司" --dept "資訊處" \
+    --no L-2026-001 --start 2026-11-01 --end 2027-10-31 --domains elearning.example.com
+```
+
+會在 `dist/` 產生 `ISO27001_ISMS_授權版_○○股份有限公司_L-2026-001.zip`（原始專案不會被修改），內含：
+- 完整網站（閱讀版、動畫互動版與語音、課後測驗），`js/license.js` 已寫入該客戶的授權資訊
+- 給客戶的 `README_授權版.md`（架設方式與授權說明）
+- 預設不含語音重製工具；要附上請加 `--tools`
+
+網頁會顯示：頁首「授權：○○股份有限公司」、首頁「○○股份有限公司　內部教育訓練專用」、每頁頁尾授權說明（公司、編號、期間）、結業證書「授權單位」，以及題目解答下載檔與列印版的授權說明。
+授權到期，或網站不在 `--domains` 指定的網域時，頁面頂端會出現紅色提醒（`--end`、`--domains` 不填則不檢查；在 localhost 或直接開檔時不檢查網域）。
+若客戶直接在 zip 壓縮檔裡點開網頁，頁面會提示先「全部解壓縮」。
+
+> 注意：授權資訊是寫在網頁檔案裡的，取得原始檔的人在技術上仍可自行修改；此機制用於標示與提醒，正式的使用範圍請以授權合約約定。
+
 ## 使用方式
 純靜態網站，無需後端。
 - 本機：`python3 -m http.server`，開啟 http://localhost:8000
@@ -37,6 +57,7 @@ python3 tools/gen_audio.py   # 只會重新合成有變動的句子
 - `js/quiz.js`：課後測驗題目、正解、解說與通過分數
 - `assets/`：講師 Allan 與 AI 小助手阿拉蕾的半身像、全身像及 8 種表情（由角色設定圖裁切）
 - `js/characters.js`：角色圖檔與依台詞自動選表情的規則
+- `js/license.js`、`js/license-ui.js`、`tools/make_license_package.py`：客戶授權版機制
 - `play.html`、`css/play.css`、`js/play.js`、`js/play-script.js`：動畫互動版
 - `audio/`：各章語音 MP3 與時間軸 `cues.js`；`tools/`：語音產生工具
 
