@@ -12,6 +12,8 @@
     return '<div class="say ' + who + '"><div class="face"><img src="' + CH.face(who, m) + '" alt=""><b>' + CH.CHAR[who].short + '</b></div><div class="bubble" aria-label="' + CH.CHAR[who].name + '">' + html + "</div></div>";
   }
   var TIP = { consult: "顧問實務", audit: "稽核員視角", ng: "常見缺失", key: "重點" };
+  var CREDIT = "教材規劃製作：Allan Lo 顧問（http://www.123hi.org）";
+  var COPYRIGHT = "Copyright © 2027 Allan Lo. All rights reserved.";
   var COURSE_TITLE = "ISMS 標準簡介：ISO/IEC 27001:2022 線上課程";
   var STORE = "isms27001-course-v1";
 
@@ -416,6 +418,7 @@
 
       g.textAlign = "center"; g.font = "400 20px " + SANS; g.fillStyle = "#8a909c";
       g.fillText("本證書依 ISO/IEC 27001:2022（含 Amd 1:2024）課程內容核發，僅證明完成課程訓練，非 ISMS 驗證證書。", W / 2, H - 100);
+      g.fillText(CREDIT + " · " + COPYRIGHT, W / 2, H - 132);
       return cv.toDataURL("image/png");
     });
   }
@@ -444,7 +447,8 @@
       "<h1>" + esc(COURSE_TITLE) + "－課後測驗題目與解答</h1><table>" +
       "<tr><td>公司名稱</td><td>" + esc(info.company) + "</td></tr><tr><td>單位</td><td>" + esc(info.dept) + "</td></tr><tr><td>姓名</td><td>" + esc(info.name) + "</td></tr>" +
       "<tr><td>職稱</td><td>" + esc(info.title) + "</td></tr><tr><td>E-mail</td><td>" + esc(info.email) + "</td></tr><tr><td>成績</td><td>" + P.score + " 分</td></tr>" +
-      "<tr><td>證書編號</td><td>" + esc(P.no) + "</td></tr><tr><td>日期</td><td>" + fmtDate(P.at) + "</td></tr></table>" + body + "</body></html>";
+      "<tr><td>證書編號</td><td>" + esc(P.no) + "</td></tr><tr><td>日期</td><td>" + fmtDate(P.at) + "</td></tr></table>" + body +
+      '<p style="margin-top:24px;color:#5a6170;font-size:13px;text-align:center">' + esc(CREDIT) + "<br>" + esc(COPYRIGHT) + "</p></body></html>";
   }
 
   function download(name, url) {
@@ -484,7 +488,7 @@
       pa.innerHTML = '<img src="' + url + '" alt="">' + "<h2>" + esc(COURSE_TITLE) + "－課後測驗題目與解答（" + esc(info.name) + "）</h2>" +
         rows.map(function (r) {
           return '<div class="pq"><b>' + r.n + ". " + r.q + "</b><br>" + r.opts.map(function (o, i) { return "ABCD"[i] + ". " + o + (i === r.a ? " ✔" : ""); }).join("<br>") + "<br><i>解說：" + r.exp + "</i></div>";
-        }).join("");
+        }).join("") + '<p style="text-align:center;font-size:9pt;margin-top:16pt">' + esc(CREDIT) + "<br>" + esc(COPYRIGHT) + "</p>";
     });
     document.getElementById("dlCert").addEventListener("click", function () {
       if (certURL) download("ISMS結業證書_" + info.name + ".png", certURL);

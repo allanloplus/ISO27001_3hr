@@ -271,6 +271,15 @@ h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 
 
 #printArea { display: none; }
 
+/* 版權頁尾 */
+.site-foot {
+  border-top: 2px solid var(--ink); background: var(--surface); color: var(--muted);
+  padding-inline: 16px; padding-block: 16px calc(16px + env(safe-area-inset-bottom, 0px));
+  text-align: center; font-size: .85rem; line-height: 1.6; display: grid; gap: 2px;
+}
+.site-foot p { margin: 0; }
+.site-foot a { color: var(--seal); }
+
 /* 手機版 */
 @media (max-width: 900px) {
   .shell { grid-template-columns: minmax(0, 1fr); }
@@ -302,7 +311,7 @@ h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 
 /* 列印：只印證書與題解 */
 @media print {
   body { background: #fff; color: #000; }
-  .topbar, .shell { display: none !important; }
+  .topbar, .shell, .site-foot { display: none !important; }
   #printArea { display: block !important; }
   #printArea img { width: 100%; page-break-after: always; }
   #printArea h2 { font-size: 16pt; margin: 0 0 8pt; }

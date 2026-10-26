@@ -39,3 +39,8 @@ python3 tools/gen_audio.py   # 只會重新合成有變動的句子
 - `js/characters.js`：角色圖檔與依台詞自動選表情的規則
 - `play.html`、`css/play.css`、`js/play.js`、`js/play-script.js`：動畫互動版
 - `audio/`：各章語音 MP3 與時間軸 `cues.js`；`tools/`：語音產生工具
+
+---
+教材規劃製作：Allan Lo 顧問（http://www.123hi.org）
+
+Copyright © 2027 Allan Lo. All rights reserved.
