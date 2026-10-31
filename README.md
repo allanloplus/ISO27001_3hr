@@ -56,6 +56,7 @@ python3 tools/make_license_package.py --company "○○股份有限公司" --dep
 - `js/content-1.js`～`js/content-3.js`：課程內容（可直接編修文字）
 - `js/quiz.js`：課後測驗題目、正解、解說與通過分數
 - `assets/`：講師 Allan 與 AI 小助手阿拉蕾的半身像、全身像及 8 種表情（由角色設定圖裁切）
+- `assets/signature.png`：講師簽名檔（結業證書使用，透明背景 PNG，可直接替換）
 - `js/characters.js`：角色圖檔與依台詞自動選表情的規則
 - `js/license.js`、`js/license-ui.js`、`tools/make_license_package.py`：客戶授權版機制
 - `play.html`、`css/play.css`、`js/play.js`、`js/play-script.js`：動畫互動版

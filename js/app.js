@@ -14,6 +14,7 @@
   var TIP = { consult: "顧問實務", audit: "稽核員視角", ng: "常見缺失", key: "重點" };
   var CREDIT = "教材規劃製作：Allan Lo 顧問（http://www.123hi.org）";
   var COPYRIGHT = "Copyright © 2026 Allan Lo. All rights reserved.";
+  var SIGNATURE = "assets/signature.png";
   var COURSE_TITLE = "ISMS 標準簡介：ISO/IEC 27001:2022 線上課程";
   var STORE = "isms27001-course-v1";
 
@@ -341,8 +342,8 @@
       document.fonts.load('400 40px "LXGW WenKai TC"', text)
     ]).catch(function () { }) : Promise.resolve();
 
-    return Promise.all([fontsReady, loadImg(IMG.A), loadImg(IMG.R)]).then(function (r) {
-      var imA = r[1], imR = r[2];
+    return Promise.all([fontsReady, loadImg(IMG.A), loadImg(IMG.R), loadImg(SIGNATURE)]).then(function (r) {
+      var imA = r[1], imR = r[2], imSig = r[3];
       var SERIF = '"Noto Serif TC", "Songti TC", serif', SANS = '"Noto Sans TC", "Microsoft JhengHei", sans-serif', HAND = '"LXGW WenKai TC", "Noto Sans TC", sans-serif';
       var RED = "#c8102e", INK = "#16181d";
       g.fillStyle = "#ffffff"; g.fillRect(0, 0, W, H);
@@ -409,9 +410,16 @@
         g.fillStyle = INK; fit(lic, "500 {s}px " + SANS, 26, 380); g.fillText(lic, bx + 130, 990);
       }
       g.textAlign = "center";
-      g.font = "400 46px " + HAND; g.fillStyle = INK; g.fillText("Allan Lo 羅宇倫", 1090, 900);
-      g.lineWidth = 1.5; g.beginPath(); g.moveTo(950, 915); g.lineTo(1230, 915); g.stroke();
-      g.font = "400 22px " + SANS; g.fillStyle = "#5a6170"; g.fillText("授課講師 / ISMS 輔導顧問", 1090, 948);
+      // 講師親筆簽名（壓在簽名線上，下方印姓名與職稱）；簽名檔載入失敗時改用手寫字體
+      if (imSig) {
+        var sw = 230, sh = sw * imSig.height / imSig.width;
+        g.drawImage(imSig, 1090 - sw / 2, 953 - sh, sw, sh);
+      } else {
+        g.font = "400 46px " + HAND; g.fillStyle = INK; g.fillText("Allan Lo 羅宇倫", 1090, 930);
+      }
+      g.strokeStyle = INK; g.lineWidth = 1.5; g.beginPath(); g.moveTo(950, 945); g.lineTo(1230, 945); g.stroke();
+      g.font = "500 24px " + SANS; g.fillStyle = INK; g.fillText("Allan Lo 羅宇倫", 1090, 985);
+      g.font = "400 21px " + SANS; g.fillStyle = "#5a6170"; g.fillText("授課講師 / ISMS 輔導顧問", 1090, 1014);
 
       // 印章
       g.save(); g.translate(1290, 1010); g.rotate(-0.18);
